@@ -1,0 +1,20 @@
+---
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    name: Releas
+    runs-on: ubuntu-latest
+    steps:
+      - name: Release by CHANGELOG.md
+        uses: docker://antonyurchenko/git-release:latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DRAFT_RELEASE: "false"
+          PRE_RELEASE: "false"
+          CHANGELOG_FILE: "CHANGELOG.md"
+          ALLOW_EMPTY_CHANGELOG: "false"
+          ALLOW_TAG_PREFIX: "true"
