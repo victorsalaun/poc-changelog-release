@@ -1,0 +1,20 @@
+---
+on: push
+
+jobs:
+  build:
+    name: Super linter
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+      - name: Lint Code Base
+        uses: docker://github/super-linter:v3
+        env:
+          VALIDATE_ALL_CODEBASE: true
+          DEFAULT_BRANCH: ${{ steps.extract_branch.outputs.branch }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
